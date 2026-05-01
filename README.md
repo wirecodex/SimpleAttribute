@@ -62,8 +62,8 @@ Regular `.php` and `.phtml` files are ignored. No directory configuration needed
 
 ```html
 <h1>{{ page.title }}</h1>
-<p>{{ page.summary<truncate:100> }}</p>
-<time>{{ page.created<date:F j, Y> }}</time>
+<p>{{ page.summary<truncate=100> }}</p>
+<time>{{ page.created<date=M j Y> }}</time>
 ```
 
 ### Simple Loop
@@ -145,11 +145,11 @@ Filters use angle-bracket syntax appended directly to the expression:
 
 ```html
 {{ text<upper> }}                   <!-- Single filter -->
-{{ text<truncate:100> }}            <!-- Filter with argument -->
-{{ price<float:2,dollar> }}         <!-- Chain multiple filters (comma-separated) -->
+{{ text<truncate=100> }}            <!-- Filter with argument -->
+{{ price<float=2, dollar> }}         <!-- Chain multiple filters (comma-separated) -->
 {{ html<raw> }}                     <!-- Disable auto-escaping -->
 {{ data<json> }}                    <!-- JSON encode -->
-{{ date<date:Y-m-d> }}              <!-- Date formatting -->
+{{ date<date=Y-m-d> }}              <!-- Date formatting -->
 ```
 
 ---
@@ -171,11 +171,11 @@ Filters use angle-bracket syntax appended directly to the expression:
 | Syntax | Description |
 | --- | --- |
 | `{{ name<upper> }}` | Single filter |
-| `{{ text<truncate:100> }}` | Filter with argument |
-| `{{ price<float:2,dollar> }}` | Multiple filters (comma-separated) |
+| `{{ text<truncate=100> }}` | Filter with argument (`=` introduces the argument) |
+| `{{ price<float=2, dollar> }}` | Multiple filters (comma-separated, space optional) |
 | `{{ html<raw> }}` | Disable auto-escaping |
 | `{{ data<json> }}` | JSON encode |
-| `{{ date<date:Y-m-d> }}` | Date formatting |
+| `{{ date<date=Y-m-d> }}` | Date formatting |
 
 ### Conditionals
 
@@ -219,7 +219,7 @@ Filters use angle-bracket syntax appended directly to the expression:
 | `lower` | Lowercase |
 | `title` | Title Case |
 | `sentence` | Sentence case |
-| `truncate:n` | Limit length |
+| `truncate=n` | Limit length |
 | `clean` | Trim whitespace |
 | `reverse` | Reverse string |
 | `shuffle` | Randomize characters |
@@ -231,7 +231,7 @@ Filters use angle-bracket syntax appended directly to the expression:
 | Filter | Description |
 | --- | --- |
 | `number` | Format number |
-| `float:n` | Float with decimals |
+| `float=n` | Float with decimals |
 | `integer` | Convert to int |
 | `ceil` | Round up |
 | `floor` | Round down |
@@ -251,10 +251,10 @@ Filters use angle-bracket syntax appended directly to the expression:
 
 | Filter | Description |
 | --- | --- |
-| `date:format` | Date format (e.g. `date:Y-m-d`) |
+| `date=format` | Date format (e.g. `date=Y-m-d`) |
 | `json` | JSON encode |
 
-> Filters can be chained using commas inside the angle brackets: `{{ text<clean,truncate:100,upper> }}`
+> Filters can be chained with comma-separated syntax inside the angle brackets: `{{ text<clean, truncate=100, upper> }}`
 
 ---
 
@@ -267,7 +267,7 @@ Wraps the element itself in the loop — the element is repeated once per item:
 ```html
 <div pw-repeat-me="$products" class="product-card">
     <h3>{{ title }}</h3>
-    <p>{{ description<truncate:100> }}</p>
+    <p>{{ description<truncate=100> }}</p>
     <span>{{ price<dollar> }}</span>
 </div>
 ```
@@ -616,8 +616,8 @@ $products = $pages->find("template=product, limit=20, sort=-created");
         </div>
 
         <div class="info">
-            <h3>{{ title<truncate:50> }}</h3>
-            <p>{{ description<truncate:100> }}</p>
+            <h3>{{ title<truncate=50> }}</h3>
+            <p>{{ description<truncate=100> }}</p>
 
             <div class="price">
                 <span pw-if="on_sale" class="original">{{ regular_price<dollar> }}</span>
@@ -648,11 +648,11 @@ $posts = $pages->find("template=blog-post, limit=10, sort=-created");
     <article pw-repeat-me="$posts" class="post">
         <header>
             <h2><a href="{{ url }}">{{ title }}</a></h2>
-            <time datetime="{{ created<date:c> }}">{{ created<date:F j, Y> }}</time>
+            <time datetime="{{ created<date=c> }}">{{ created<date=M j Y> }}</time>
         </header>
 
         <div class="content">
-            {{ summary<truncate:300> ?? body<truncate:300> }}
+            {{ summary<truncate=300> ?? body<truncate=300> }}
         </div>
 
         <footer>
@@ -768,7 +768,7 @@ $page->route("get:products/{id}", function($id) {
 <!-- After -->
 <div pw-repeat-me="$products" class="product">
     <h3>{{ title }}</h3>
-    <p>{{ description<truncate:100> }}</p>
+    <p>{{ description<truncate=100> }}</p>
 </div>
 ```
 

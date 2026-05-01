@@ -207,10 +207,10 @@ class AttributeParser
         $hasEscape = false;
         $hasRaw    = false;
 
-        foreach (array_map('trim', explode(',', $filters)) as $filter) {
-            $filterParts = explode(':', $filter, 2);
-            $filterName  = $filterParts[0];
-            $args        = $filterParts[1] ?? null;
+        foreach (preg_split('/,\s*/', $filters, -1, PREG_SPLIT_NO_EMPTY) as $filter) {
+            $filterParts = explode('=', trim($filter), 2);
+            $filterName  = trim($filterParts[0]);
+            $args        = isset($filterParts[1]) ? trim($filterParts[1]) : null;
 
             if (!isset($this->modifiers[$filterName])) continue;
 
@@ -226,8 +226,9 @@ class AttributeParser
             $template = $this->modifiers[$filterName];
             $expr     = str_replace('string', $expr, $template);
 
-            if ($args) {
-                $expr = preg_replace('/\)$/', ', ' . $args . ')', $expr) ?? $expr;
+            if ($args !== null && $args !== '') {
+                $argList = str_replace('|', ', ', $args);
+                $expr = preg_replace('/\)$/', ', ' . $argList . ')', $expr) ?? $expr;
             }
         }
 
