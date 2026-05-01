@@ -792,3 +792,7 @@ $page->route("get:products/{id}", function($id) {
 | Filters | `{{ var\|filter }}` | `{{ var<filter> }}` |
 | Includes | `@include` / `{% include %}` | `pw-include` attribute |
 | Escaping | Manual with filters | Auto-escape by default |
+
+## License
+
+This module is released under the MIT License.
